@@ -1,0 +1,8 @@
+
+fastapi
+uvicorn
+selenium
+beautifulsoup4
+pydantic
+scrapy
+webdriver-manager

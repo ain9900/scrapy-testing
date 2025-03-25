@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+pymysql
+scrapy
+beautifulsoup4
+lxml
+celery
+redis

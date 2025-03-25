@@ -1,1 +1,3 @@
 scrapyvenv
+*.pyc
+frontend/node_modules
