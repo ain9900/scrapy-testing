@@ -1,36 +1,11 @@
-
+<!-- frontend/public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>SEO Analyzer</title>
-  <style>
-    body { font-family: Arial; padding: 2rem; }
-    input, button { padding: 10px; font-size: 1rem; }
-    pre { background: #f4f4f4; padding: 1rem; border-radius: 5px; margin-top: 1rem; }
-  </style>
-</head>
-<body>
-  <h2>SEO Analyzer</h2>
-  <input type="text" id="urlInput" placeholder="Enter website URL" size="40"/>
-  <button onclick="analyze()">Analyze</button>
-  <pre id="output">Results will appear here...</pre>
-
-  <script>
-    async function analyze() {
-      const url = document.getElementById("urlInput").value;
-      const output = document.getElementById("output");
-      output.textContent = "Analyzing... Please wait.";
-
-      const response = await fetch("http://127.0.0.1:8000/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: url })
-      });
-
-      const result = await response.json();
-      output.textContent = JSON.stringify(result, null, 2);
-    }
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>SEO Analyzer Dashboard</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>

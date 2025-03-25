@@ -1,15 +1,25 @@
 from celery import Celery
-from utils import run_scrapy_job
+import subprocess
 
-app = Celery("tasks", broker="redis://redis:6379/0")
+# Set up the Celery app; using Redis as the broker.
+app = Celery("tasks", broker="redis://localhost:6379/0")
 
 @app.task(bind=True)
-def run_crawl_task(self, url):
-    result_data = run_scrapy_job(url)
-    from database import SessionLocal
-    from models import AnalysisResult
-    db = SessionLocal()
-    db_result = AnalysisResult(url=url, task_id=self.request.id, data=result_data)
-    db.add(db_result)
-    db.commit()
-    db.close()
+def run_scraper(self, url):
+    """
+    This task runs your scraper for the given URL.
+    It uses subprocess to call your Scrapy spider.
+    """
+    # You can generate a unique output file if needed
+    output_file = f"output_{url.replace('https://','').replace('/','_')}.json"
+    try:
+        # Run the Scrapy spider; adjust the command as needed.
+        subprocess.run([
+            "scrapy", "crawl", "seo_spider",
+            "-a", f"url={url}",
+            "-o", output_file
+        ], check=True)
+        return {"url": url, "status": "completed", "output_file": output_file}
+    except subprocess.CalledProcessError as e:
+        # Optionally, retry or log errors here.
+        self.retry(exc=e, countdown=10, max_retries=3)
